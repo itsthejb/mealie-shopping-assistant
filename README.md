@@ -2,6 +2,8 @@
 
 A Chrome Manifest V3 side-panel extension for shopping through a Mealie shopping list while keeping your chosen supermarket open in a separate tab. The extension opens product searches for you; you choose the exact products and add them to your cart yourself.
 
+The panel uses a random, curated Unsplash photo from the default **supermarket, food** theme as a lightly blurred background. Its attribution includes links to Unsplash and the selected photo source. No Unsplash API key, search setting, or account is required.
+
 ## Install
 
 1. Download or clone this repository.
@@ -25,7 +27,7 @@ Save settings and grant access to the Mealie host when Chrome asks. The extensio
 
 ## Security and privacy
 
-The API token and configuration are stored only in `chrome.storage.local`; they are not stored in Chrome sync storage, embedded in the source, logged, or sent to any service other than the configured Mealie instance. The extension requests optional host access only for the configured Mealie origin. Supermarket searches are opened as normal tabs and are never embedded in a frame. The extension does not select products, add products to a cart, or make purchases.
+The API token and configuration are stored only in `chrome.storage.local`; the token is not stored in Chrome sync storage, embedded in the source, or logged, and is sent only to the configured Mealie instance. A selected background image is requested directly from `images.unsplash.com`; the curated image URLs are in the extension source, with no API key or search endpoint. If an image cannot load, the panel falls back to its normal solid background and remains usable. The extension requests optional host access only for the configured Mealie origin. Supermarket searches are opened as normal tabs and are never embedded in a frame. The extension does not select products, add products to a cart, or make purchases.
 
 ## Development
 

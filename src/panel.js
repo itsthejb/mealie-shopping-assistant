@@ -14,6 +14,26 @@ import {
   restoreShoppingListSelection,
   saveLastShoppingListId,
 } from "./list-preference.js";
+import { chooseRandomBackground, DEFAULT_BACKGROUND_THEME } from "./backgrounds.js";
+
+const background = chooseRandomBackground();
+document.querySelector("#background-image").style.setProperty(
+  "--panel-background-image",
+  `url("${background.imageUrl}")`,
+);
+const attribution = document.querySelector("#background-attribution");
+attribution.append("Background photo (", document.createTextNode(DEFAULT_BACKGROUND_THEME), ") from ");
+const unsplashLink = document.createElement("a");
+unsplashLink.href = "https://unsplash.com";
+unsplashLink.target = "_blank";
+unsplashLink.rel = "noopener noreferrer";
+unsplashLink.textContent = "Unsplash";
+const sourceLink = document.createElement("a");
+sourceLink.href = background.imageUrl;
+sourceLink.target = "_blank";
+sourceLink.rel = "noopener noreferrer";
+sourceLink.textContent = "Photo source";
+attribution.append(unsplashLink, " · ", sourceLink);
 
 const elements = {
   settings: document.querySelector("#settings"),

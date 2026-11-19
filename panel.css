@@ -8,6 +8,8 @@
 }
 
 body {
+  position: relative;
+  isolation: isolate;
   margin: 0;
   min-width: 280px;
   padding: 16px;
@@ -15,7 +17,31 @@ body {
   background: Canvas;
 }
 
+.background-image-layer,
+.background-wash {
+  position: fixed;
+  inset: -8px;
+  pointer-events: none;
+}
+
+.background-image-layer {
+  z-index: 0;
+  background-color: Canvas;
+  background-image: var(--panel-background-image);
+  background-position: center;
+  background-size: cover;
+  filter: blur(4px);
+  opacity: 0.35;
+}
+
+.background-wash {
+  z-index: 1;
+  background: color-mix(in srgb, Canvas 70%, transparent);
+}
+
 main {
+  position: relative;
+  z-index: 2;
   display: grid;
   gap: 20px;
 }
@@ -46,6 +72,7 @@ section {
   border: 1px solid color-mix(in srgb, CanvasText 22%, Canvas);
   border-radius: 8px;
   padding: 12px;
+  background: color-mix(in srgb, Canvas 82%, transparent);
 }
 
 summary {
@@ -164,4 +191,14 @@ select:disabled {
 
 #status[data-error="true"] {
   color: #b42318;
+}
+
+.background-attribution {
+  color: color-mix(in srgb, CanvasText 72%, Canvas);
+  font-size: 0.75rem;
+  text-align: right;
+}
+
+.background-attribution a {
+  color: inherit;
 }

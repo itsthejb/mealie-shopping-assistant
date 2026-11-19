@@ -3,6 +3,9 @@
   "name": "Mealie Shopping Assistant",
   "version": "1.0.0",
   "description": "Shop through a Mealie list alongside your supermarket.",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; img-src 'self' https://images.unsplash.com;"
+  },
   "permissions": ["storage", "sidePanel"],
   "optional_host_permissions": ["http://*/*", "https://*/*"],
   "background": {
