@@ -16,6 +16,7 @@ import {
 } from "./list-preference.js";
 import { chooseRandomBackground, DEFAULT_BACKGROUND_THEME } from "./backgrounds.js";
 import { requestMealieOriginAccess } from "./permissions.js";
+import { navigateSearchTab } from "./search-tab.js";
 
 const background = chooseRandomBackground();
 document.querySelector("#background-image").style.setProperty(
@@ -78,7 +79,7 @@ function setBusy(value) {
 
 async function openSearch(query) {
   const url = createSearchUrl(settings.searchUrlTemplate, query);
-  await chrome.tabs.create({ url, active: true });
+  await navigateSearchTab(chrome.tabs, chrome.storage.session, url);
 }
 
 function renderCurrentItem() {
