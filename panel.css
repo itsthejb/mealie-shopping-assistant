@@ -1,0 +1,167 @@
+:root {
+  color-scheme: light dark;
+  font: 14px/1.45 system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 280px;
+  padding: 16px;
+  color: CanvasText;
+  background: Canvas;
+}
+
+main {
+  display: grid;
+  gap: 20px;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 1.4rem;
+}
+
+h2 {
+  font-size: 1.1rem;
+}
+
+header p,
+.hint,
+#item-details,
+.eyebrow {
+  color: color-mix(in srgb, CanvasText 72%, Canvas);
+}
+
+details,
+section {
+  border: 1px solid color-mix(in srgb, CanvasText 22%, Canvas);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 650;
+}
+
+form,
+section[aria-labelledby="list-heading"] {
+  display: grid;
+  gap: 9px;
+}
+
+form {
+  margin-top: 12px;
+}
+
+label {
+  font-weight: 600;
+}
+
+input,
+select,
+button {
+  min-height: 38px;
+  border: 1px solid color-mix(in srgb, CanvasText 32%, Canvas);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  border-color: #176b3a;
+  color: white;
+  background: #176b3a;
+  font-weight: 650;
+}
+
+button.secondary {
+  color: CanvasText;
+  border-color: color-mix(in srgb, CanvasText 32%, Canvas);
+  background: Canvas;
+}
+
+button:disabled,
+select:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.section-title,
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title {
+  justify-content: space-between;
+}
+
+.section-title button {
+  min-height: 32px;
+  padding: 4px 8px;
+}
+
+.hint {
+  font-size: 0.85rem;
+}
+
+.eyebrow {
+  font-size: 0.85rem;
+}
+
+#current-item {
+  display: grid;
+  gap: 10px;
+}
+
+#current-item[hidden] {
+  display: none;
+}
+
+#substitutions {
+  display: grid;
+  gap: 6px;
+}
+
+.substitution {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-top: 1px solid color-mix(in srgb, CanvasText 18%, Canvas);
+  padding-top: 7px;
+}
+
+.substitution button {
+  min-height: 32px;
+  flex: 0 0 auto;
+  padding: 4px 8px;
+}
+
+.actions {
+  flex-wrap: wrap;
+}
+
+.actions button {
+  flex: 1 1 auto;
+}
+
+#status {
+  min-height: 1.4em;
+}
+
+#status[data-error="true"] {
+  color: #b42318;
+}

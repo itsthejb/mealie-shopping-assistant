@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Mealie Shopping Assistant",
+  "version": "1.0.0",
+  "description": "Shop through a Mealie list alongside your supermarket.",
+  "permissions": ["storage", "sidePanel"],
+  "optional_host_permissions": ["http://*/*", "https://*/*"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Open Mealie Shopping Assistant"
+  },
+  "side_panel": {
+    "default_path": "panel.html"
+  }
+}
