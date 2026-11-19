@@ -15,6 +15,7 @@ import {
   saveLastShoppingListId,
 } from "./list-preference.js";
 import { chooseRandomBackground, DEFAULT_BACKGROUND_THEME } from "./backgrounds.js";
+import { requestMealieOriginAccess } from "./permissions.js";
 
 const background = chooseRandomBackground();
 document.querySelector("#background-image").style.setProperty(
@@ -245,11 +246,11 @@ elements.settingsForm.addEventListener("submit", async (event) => {
       supermarketName: elements.supermarketName.value,
       searchUrlTemplate: elements.searchTemplate.value,
     });
-    const originPattern = `${new URL(updatedSettings.mealieUrl).origin}/*`;
-    const granted = await chrome.permissions.request({ origins: [originPattern] });
-    if (!granted) {
-      throw new Error("Host access was not granted, so the extension cannot connect to Mealie.");
-    }
+    await requestMealieOriginAccess(
+      chrome.permissions,
+      updatedSettings.mealieUrl,
+      settings?.mealieUrl,
+    );
     await chrome.storage.local.set({ settings: updatedSettings });
     settings = updatedSettings;
     elements.settings.open = false;

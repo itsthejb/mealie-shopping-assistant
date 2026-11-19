@@ -21,13 +21,15 @@ In the side panel, enter:
 
 Save settings and grant access to the Mealie host when Chrome asks. The extension uses the Mealie API token as a Bearer token. It remembers your last selected shopping list locally and restores it when available. If there is no saved selection, it selects the only list automatically when there is exactly one; otherwise, choose a list before starting. The list selector remains available so you can switch lists.
 
+The manifest declares optional HTTP and HTTPS host patterns as a permission ceiling so you can use arbitrary self-hosted Mealie origins. Chrome does not grant those wildcard patterns: when settings are saved, the extension requests only the exact configured Mealie origin (including its port), and Chrome asks for approval. Changing Mealie origins removes the prior exact-origin grant. The extension does not request access to the supermarket site; it only opens search URLs in a new tab.
+
 ## Shop
 
 **Start shopping** loads unchecked items and opens a supermarket search for the current item. Use **Search** beside a Mealie substitution to search for that alternative. After you select and add a product yourself, **Got it** marks the item checked in Mealie and opens the next search. **Skip it** leaves the item unchecked and moves on. **Done** ends the session without changing remaining items.
 
 ## Security and privacy
 
-The API token and configuration are stored only in `chrome.storage.local`; the token is not stored in Chrome sync storage, embedded in the source, or logged, and is sent only to the configured Mealie instance. A selected background image is requested directly from `images.unsplash.com`; the curated image URLs are in the extension source, with no API key or search endpoint. If an image cannot load, the panel falls back to its normal solid background and remains usable. The extension requests optional host access only for the configured Mealie origin. Supermarket searches are opened as normal tabs and are never embedded in a frame. The extension does not select products, add products to a cart, or make purchases.
+The API token and configuration are stored only in `chrome.storage.local`; the token is not stored in Chrome sync storage, embedded in the source, or logged, and is sent only to the configured Mealie instance. The extension's `storage` and `sidePanel` permissions support local settings and the persistent panel. It requests no `tabs` or supermarket host permission. A selected background image is requested directly from `images.unsplash.com`; the curated image URLs are in the extension source, with no API key or search endpoint. If an image cannot load, the panel falls back to its normal solid background and remains usable. Supermarket searches are opened as normal tabs and are never embedded in a frame. The extension does not select products, add products to a cart, or make purchases.
 
 ## Development
 
