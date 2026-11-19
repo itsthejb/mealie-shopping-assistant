@@ -17,7 +17,7 @@ In the side panel, enter:
 - A supermarket name for display.
 - A search URL with exactly one `%s` or `{query}` placeholder, for example `https://www.ocado.com/search?q=%s`.
 
-Save settings and grant access to the Mealie host when Chrome asks. The extension uses the Mealie API token as a Bearer token. It loads your shopping lists and selects the only list automatically when there is exactly one; otherwise, choose a list before starting.
+Save settings and grant access to the Mealie host when Chrome asks. The extension uses the Mealie API token as a Bearer token. It remembers your last selected shopping list locally and restores it when available. If there is no saved selection, it selects the only list automatically when there is exactly one; otherwise, choose a list before starting. The list selector remains available so you can switch lists.
 
 ## Shop
 

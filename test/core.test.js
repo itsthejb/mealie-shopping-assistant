@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   createCheckedItemUpdate,
   createSearchUrl,
+  getItemPresentation,
   getSubstitutions,
   normalizeSettings,
 } from "../src/core.js";
@@ -42,16 +43,18 @@ test("rejects unsafe or ambiguous settings", () => {
 });
 
 test("uses named Mealie substitutions and preserves item data when checking it", () => {
-  assert.deepEqual(
-    getSubstitutions({
-      food: {
-        substitutions: [
-          { substituteFood: { name: "Chickpeas" }, note: "canned" },
-          { substituteFood: null },
-        ],
-      },
-    }),
-    [{ name: "Chickpeas", note: "canned" }],
+  const substitutions = getSubstitutions({
+    food: {
+      substitutions: [
+        { substituteFood: { name: "Chickpeas" }, note: "canned" },
+        { substituteFood: null },
+      ],
+    },
+  });
+  assert.deepEqual(substitutions, [{ name: "Chickpeas", note: "canned" }]);
+  assert.equal(
+    createSearchUrl("https://www.ocado.com/search?q=%s", substitutions[0].name),
+    "https://www.ocado.com/search?q=Chickpeas",
   );
   assert.deepEqual(
     createCheckedItemUpdate({
@@ -79,5 +82,44 @@ test("uses named Mealie substitutions and preserves item data when checking it",
       display: "Tomatoes",
       recipeReferences: [],
     },
+  );
+});
+
+test("searches by ingredient name while retaining fractional quantity and unit", () => {
+  const item = {
+    quantity: 2 / 3,
+    unit: { name: "block" },
+    display: "2⁄3 block Cream Cheese",
+    food: { name: "Cream Cheese" },
+    note: "softened",
+  };
+  const presentation = getItemPresentation(item);
+
+  assert.equal(presentation.name, "Cream Cheese");
+  assert.equal(presentation.details, "2⁄3 block softened");
+  assert.equal(
+    createSearchUrl("https://www.ocado.com/search?q=%s", presentation.name),
+    "https://www.ocado.com/search?q=Cream%20Cheese",
+  );
+});
+
+test("extracts quantity and common units from display-only Mealie items", () => {
+  assert.deepEqual(
+    getItemPresentation({
+      quantity: 2 / 3,
+      display: "2/3 block Cream Cheese",
+      food: null,
+      unit: null,
+    }),
+    { name: "Cream Cheese", details: "2/3 block" },
+  );
+  assert.deepEqual(
+    getItemPresentation({
+      quantity: 2,
+      display: "2 eggs",
+      food: null,
+      unit: null,
+    }),
+    { name: "eggs", details: "2" },
   );
 });

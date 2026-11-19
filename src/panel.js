@@ -1,7 +1,7 @@
 import {
   createCheckedItemUpdate,
   createSearchUrl,
-  getItemName,
+  getItemPresentation,
   getSubstitutions,
   normalizeSettings,
 } from "./core.js";
@@ -10,6 +10,10 @@ import {
   getShoppingLists,
   markShoppingItemChecked,
 } from "./mealie-api.js";
+import {
+  restoreShoppingListSelection,
+  saveLastShoppingListId,
+} from "./list-preference.js";
 
 const elements = {
   settings: document.querySelector("#settings"),
@@ -66,10 +70,9 @@ function renderCurrentItem() {
 
   elements.currentItem.hidden = false;
   elements.itemCounter.textContent = `Item ${currentIndex + 1} of ${items.length}`;
-  elements.itemName.textContent = getItemName(item);
-  const quantity = item.quantity > 1 ? `${item.quantity} ` : "";
-  const unit = item.unit?.name ? `${item.unit.name} ` : "";
-  elements.itemDetails.textContent = `${quantity}${unit}${item.note || ""}`.trim();
+  const presentation = getItemPresentation(item);
+  elements.itemName.textContent = presentation.name;
+  elements.itemDetails.textContent = presentation.details;
   elements.substitutions.replaceChildren();
 
   const substitutions = getSubstitutions(item);
@@ -97,7 +100,7 @@ function renderCurrentItem() {
 }
 
 async function searchCurrentItem() {
-  await openSearch(getItemName(items[currentIndex]));
+  await openSearch(getItemPresentation(items[currentIndex]).name);
 }
 
 async function searchSubstitution(name) {
@@ -127,12 +130,17 @@ async function loadLists() {
       option.textContent = list.name || "Untitled list";
       elements.listSelect.append(option);
     }
-    if (lists.length === 1) {
-      elements.listSelect.value = lists[0].id;
-    }
+    elements.listSelect.value = await restoreShoppingListSelection(
+      chrome.storage.local,
+      lists,
+    );
     elements.listSelect.disabled = lists.length === 0;
     elements.startShopping.disabled = !elements.listSelect.value;
-    setStatus(lists.length === 1 ? "One list found and selected." : `${lists.length} lists found.`);
+    setStatus(
+      lists.length === 1 && elements.listSelect.value
+        ? "One list found and selected."
+        : `${lists.length} lists found.`,
+    );
   } catch (error) {
     setStatus(error.message, true);
   } finally {
@@ -233,8 +241,13 @@ elements.settingsForm.addEventListener("submit", async (event) => {
 });
 
 elements.refreshLists.addEventListener("click", loadLists);
-elements.listSelect.addEventListener("change", () => {
+elements.listSelect.addEventListener("change", async () => {
   elements.startShopping.disabled = !elements.listSelect.value;
+  try {
+    await saveLastShoppingListId(chrome.storage.local, elements.listSelect.value);
+  } catch (error) {
+    setStatus(error.message, true);
+  }
 });
 elements.startShopping.addEventListener("click", startShopping);
 elements.gotIt.addEventListener("click", markCurrentItem);
