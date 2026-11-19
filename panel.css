@@ -12,6 +12,7 @@ body {
   isolation: isolate;
   margin: 0;
   min-width: 280px;
+  min-height: 100vh;
   padding: 16px;
   color: CanvasText;
   background: Canvas;
@@ -41,8 +42,10 @@ body {
 main {
   position: relative;
   z-index: 2;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
+  min-height: calc(100vh - 32px);
 }
 
 h1,
@@ -204,6 +207,7 @@ select:disabled {
 }
 
 .background-attribution {
+  margin-top: auto;
   color: color-mix(in srgb, CanvasText 72%, Canvas);
   font-size: 0.75rem;
   text-align: right;
