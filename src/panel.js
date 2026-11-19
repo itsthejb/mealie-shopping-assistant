@@ -4,6 +4,7 @@ import {
   getItemPresentation,
   getSubstitutions,
   normalizeSettings,
+  shouldCelebrateCompletion,
 } from "./core.js";
 import {
   getShoppingList,
@@ -19,7 +20,8 @@ import { requestMealieOriginAccess } from "./permissions.js";
 import { navigateSearchTab } from "./search-tab.js";
 
 const background = chooseRandomBackground();
-document.querySelector("#background-image").style.setProperty(
+const backgroundLayer = document.querySelector("#background-image");
+backgroundLayer.style.setProperty(
   "--panel-background-image",
   `url("${background.imageUrl}")`,
 );
@@ -61,6 +63,7 @@ const elements = {
 let settings;
 let items = [];
 let currentIndex = 0;
+let activeListId = "";
 let busy = false;
 
 function setStatus(message, isError = false) {
@@ -76,6 +79,19 @@ function setBusy(value) {
   elements.refreshLists.disabled = value || !settings;
   elements.startShopping.disabled = value || !elements.listSelect.value;
 }
+
+function celebrateBackground() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  backgroundLayer.classList.remove("celebrating");
+  void backgroundLayer.offsetWidth;
+  backgroundLayer.classList.add("celebrating");
+}
+
+backgroundLayer.addEventListener("animationend", (event) => {
+  if (event.animationName === "completion-celebration") {
+    backgroundLayer.classList.remove("celebrating");
+  }
+});
 
 async function openSearch(query) {
   const url = createSearchUrl(settings.searchUrlTemplate, query);
@@ -178,7 +194,9 @@ async function startShopping() {
   }
   setBusy(true);
   try {
+    activeListId = "";
     items = (await getShoppingList(settings, listId)).filter((item) => !item.checked);
+    activeListId = listId;
     currentIndex = 0;
     if (!items.length) {
       renderCurrentItem();
@@ -199,6 +217,18 @@ async function advanceItem() {
     items = [];
     currentIndex = 0;
     renderCurrentItem();
+    const completedListId = activeListId;
+    activeListId = "";
+    if (!completedListId) return;
+
+    const fullList = await getShoppingList(settings, completedListId);
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (shouldCelebrateCompletion(fullList, true, prefersReducedMotion)) {
+      setStatus("Shopping list complete. Nice work!");
+      celebrateBackground();
+    }
     return;
   }
   renderCurrentItem();
@@ -234,6 +264,7 @@ async function skipCurrentItem() {
 function finishShopping() {
   items = [];
   currentIndex = 0;
+  activeListId = "";
   elements.currentItem.hidden = true;
   setStatus("Shopping session ended. Items you skipped remain unchecked.");
 }

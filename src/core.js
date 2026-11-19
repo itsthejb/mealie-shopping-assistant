@@ -145,3 +145,12 @@ export function createCheckedItemUpdate(item) {
     recipeReferences: item.recipeReferences,
   };
 }
+
+export function shouldCelebrateCompletion(items, completedNormally, prefersReducedMotion) {
+  return (
+    completedNormally &&
+    !prefersReducedMotion &&
+    items.length > 0 &&
+    items.every((item) => item.checked === true)
+  );
+}
