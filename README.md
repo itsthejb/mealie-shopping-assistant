@@ -37,4 +37,4 @@ Run the focused helper tests with `npm test`. No build step is needed; Chrome lo
 
 ## Asset attribution
 
-The bundled `icons/mealie-maskable-512x512.png` is the Mealie maskable icon from [the Mealie repository](https://github.com/mealie-recipes/mealie/blob/mealie-next/frontend/public/icons/android-chrome-maskable-512x512.png). The upstream repository is licensed under [AGPL-3.0](https://github.com/mealie-recipes/mealie/blob/mealie-next/LICENSE).
+The browser toolbar uses the bundled [32×32 Mealie favicon](https://github.com/mealie-recipes/mealie/blob/mealie-next/frontend/public/icons/favicon-32x32.png). The sidebar header uses the separate [512×512 Mealie maskable icon](https://github.com/mealie-recipes/mealie/blob/mealie-next/frontend/public/icons/android-chrome-maskable-512x512.png). Both are from the Mealie repository, which is licensed under [AGPL-3.0](https://github.com/mealie-recipes/mealie/blob/mealie-next/LICENSE).
