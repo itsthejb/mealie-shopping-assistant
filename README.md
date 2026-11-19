@@ -25,7 +25,7 @@ The manifest declares optional HTTP and HTTPS host patterns as a permission ceil
 
 ## Shop
 
-**Start shopping** loads unchecked items and opens a supermarket search for the current item. Later item and substitution searches reuse that same tab; its ID is kept in `chrome.storage.session` across side-panel and service-worker restarts. If you close the search tab, the next search opens a replacement. The Mealie tab is never repurposed. After you select and add a product yourself, **Got it** marks the item checked in Mealie and opens the next search. When every list item is checked, the background briefly celebrates; this animation respects reduced-motion preferences. **Skip it** leaves the item unchecked and moves on. **Done** ends the session without changing remaining items.
+**Start shopping** loads unchecked items and opens a supermarket search for the current item. Later item and substitution searches reuse that same tab; its ID is kept in `chrome.storage.session` across side-panel and service-worker restarts. If you close the search tab, the next search opens a replacement. The Mealie tab is never repurposed. After you select and add a product yourself, **Got it** marks the item checked in Mealie and opens the next search. When every list item is checked, ticker-tape strips briefly rise from the bottom of the background; this animation respects reduced-motion preferences. **Skip it** leaves the item unchecked and moves on. **Done** ends the session without changing remaining items.
 
 ## Security and privacy
 
