@@ -56,6 +56,17 @@ h1 {
   font-size: 1.4rem;
 }
 
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand img {
+  width: 32px;
+  height: 32px;
+}
+
 h2 {
   font-size: 1.1rem;
 }

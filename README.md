@@ -34,3 +34,7 @@ The API token and configuration are stored only in `chrome.storage.local`; the t
 ## Development
 
 Run the focused helper tests with `npm test`. No build step is needed; Chrome loads the extension's JavaScript modules directly.
+
+## Asset attribution
+
+The bundled `icons/mealie-favicon-32x32.png` is the Mealie favicon from [the Mealie repository](https://github.com/mealie-recipes/mealie/blob/mealie-next/frontend/public/icons/favicon-32x32.png). The upstream repository is licensed under [AGPL-3.0](https://github.com/mealie-recipes/mealie/blob/mealie-next/LICENSE).
