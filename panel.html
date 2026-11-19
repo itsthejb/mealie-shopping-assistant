@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mealie Shopping Assistant</title>
+    <link rel="stylesheet" href="panel.css">
+  </head>
+  <body>
+    <div id="background-image" class="background-image-layer" aria-hidden="true"></div>
+    <div class="background-wash" aria-hidden="true"></div>
+    <main>
+      <header>
+        <div class="brand">
+          <img src="icons/mealie-maskable-512x512.png" alt="">
+          <h1>Shopping assistant</h1>
+        </div>
+        <p>Keep this panel open while you shop.</p>
+      </header>
+
+      <details id="settings">
+        <summary>Settings</summary>
+        <form id="settings-form">
+          <label for="mealie-url">Mealie URL</label>
+          <input id="mealie-url" name="mealieUrl" type="url" placeholder="https://mealie.example.com" required>
+
+          <label for="api-token">Mealie API token</label>
+          <input id="api-token" name="apiToken" type="password" autocomplete="off" required>
+
+          <label for="supermarket-name">Supermarket name</label>
+          <input id="supermarket-name" name="supermarketName" type="text" placeholder="Ocado" required>
+
+          <label for="search-template">Search URL template</label>
+          <input id="search-template" name="searchUrlTemplate" type="url" placeholder="https://www.ocado.com/search?q=%s" required>
+          <p class="hint">Use exactly one <code>%s</code> or <code>{query}</code> placeholder.</p>
+
+          <button type="submit">Save settings and connect</button>
+        </form>
+      </details>
+
+      <section aria-labelledby="list-heading">
+        <div class="section-title">
+          <h2 id="list-heading">Shopping list</h2>
+          <button id="refresh-lists" class="secondary" type="button">Refresh</button>
+        </div>
+        <label for="list-select">Choose a list</label>
+        <select id="list-select" disabled>
+          <option value="">Save settings to load lists</option>
+        </select>
+        <button id="start-shopping" type="button" disabled>Start shopping</button>
+      </section>
+
+      <section id="current-item" aria-live="polite" hidden>
+        <p id="item-counter" class="eyebrow"></p>
+        <h2 id="item-name"></h2>
+        <p id="item-details"></p>
+        <div id="substitutions"></div>
+        <div class="actions">
+          <button id="got-it" type="button">Got it</button>
+          <button id="skip-it" class="secondary" type="button">Skip it</button>
+          <button id="done" class="secondary" type="button">Done</button>
+        </div>
+      </section>
+
+      <p id="status" role="status" aria-live="polite"></p>
+      <footer id="background-attribution" class="background-attribution"></footer>
+    </main>
+    <script type="module" src="src/panel.js"></script>
+  </body>
+</html>
