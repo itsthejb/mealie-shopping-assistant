@@ -30,7 +30,7 @@ body {
   background-image: var(--panel-background-image);
   background-position: center;
   background-size: cover;
-  filter: blur(4px);
+  filter: blur(2px);
   opacity: 0.35;
 }
 
