@@ -4,6 +4,7 @@ import {
   getItemPresentation,
   getSubstitutions,
   normalizeSettings,
+  shouldCelebrateCompletion,
 } from "./core.js";
 import {
   getShoppingList,
@@ -19,7 +20,8 @@ import { requestMealieOriginAccess } from "./permissions.js";
 import { navigateSearchTab } from "./search-tab.js";
 
 const background = chooseRandomBackground();
-document.querySelector("#background-image").style.setProperty(
+const backgroundLayer = document.querySelector("#background-image");
+backgroundLayer.style.setProperty(
   "--panel-background-image",
   `url("${background.imageUrl}")`,
 );
@@ -61,6 +63,7 @@ const elements = {
 let settings;
 let items = [];
 let currentIndex = 0;
+let activeListId = "";
 let busy = false;
 
 function setStatus(message, isError = false) {
@@ -76,6 +79,40 @@ function setBusy(value) {
   elements.refreshLists.disabled = value || !settings;
   elements.startShopping.disabled = value || !elements.listSelect.value;
 }
+
+const TICKER_TAPE_COLORS = ["#f5c542", "#ef6f6c", "#69c7b5", "#9d87d5", "#f28e4b"];
+
+function celebrateBackground() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  backgroundLayer.classList.remove("celebrating");
+  backgroundLayer.replaceChildren();
+  for (let index = 0; index < 18; index += 1) {
+    const tape = document.createElement("span");
+    tape.className = "ticker-tape";
+    tape.style.left = `${(index * 67 + 8) % 100}%`;
+    tape.style.setProperty("--tape-color", TICKER_TAPE_COLORS[index % TICKER_TAPE_COLORS.length]);
+    tape.style.setProperty("--tape-width", `${7 + (index % 3) * 3}px`);
+    tape.style.setProperty("--tape-height", `${18 + (index % 4) * 5}px`);
+    tape.style.setProperty("--tape-delay", `${(index % 5) * 30}ms`);
+    tape.style.setProperty("--start-rotation", `${(index % 2 ? 1 : -1) * (12 + (index % 4) * 11)}deg`);
+    tape.style.setProperty("--middle-rotation", `${(index % 2 ? -1 : 1) * (35 + (index % 3) * 25)}deg`);
+    tape.style.setProperty("--end-rotation", `${(index % 2 ? 1 : -1) * (90 + (index % 5) * 47)}deg`);
+    tape.style.setProperty("--middle-drift", `${(index % 2 ? 1 : -1) * (12 + (index % 4) * 9)}px`);
+    tape.style.setProperty("--end-drift", `${(index % 2 ? -1 : 1) * (30 + (index % 5) * 18)}px`);
+    backgroundLayer.append(tape);
+  }
+  void backgroundLayer.offsetWidth;
+  backgroundLayer.classList.add("celebrating");
+}
+
+backgroundLayer.addEventListener("animationend", (event) => {
+  if (event.animationName === "ticker-tape-rise" && event.target instanceof HTMLElement) {
+    event.target.remove();
+  }
+  if (!backgroundLayer.querySelector(".ticker-tape")) {
+    backgroundLayer.classList.remove("celebrating");
+  }
+});
 
 async function openSearch(query) {
   const url = createSearchUrl(settings.searchUrlTemplate, query);
@@ -178,7 +215,9 @@ async function startShopping() {
   }
   setBusy(true);
   try {
+    activeListId = "";
     items = (await getShoppingList(settings, listId)).filter((item) => !item.checked);
+    activeListId = listId;
     currentIndex = 0;
     if (!items.length) {
       renderCurrentItem();
@@ -199,6 +238,18 @@ async function advanceItem() {
     items = [];
     currentIndex = 0;
     renderCurrentItem();
+    const completedListId = activeListId;
+    activeListId = "";
+    if (!completedListId) return;
+
+    const fullList = await getShoppingList(settings, completedListId);
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (shouldCelebrateCompletion(fullList, true, prefersReducedMotion)) {
+      setStatus("Shopping list complete. Nice work!");
+      celebrateBackground();
+    }
     return;
   }
   renderCurrentItem();
@@ -234,6 +285,7 @@ async function skipCurrentItem() {
 function finishShopping() {
   items = [];
   currentIndex = 0;
+  activeListId = "";
   elements.currentItem.hidden = true;
   setStatus("Shopping session ended. Items you skipped remain unchecked.");
 }
