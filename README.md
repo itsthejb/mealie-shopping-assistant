@@ -37,4 +37,4 @@ Run the focused helper tests with `npm test`. No build step is needed; Chrome lo
 
 ## Asset attribution
 
-The bundled `icons/mealie-favicon-32x32.png` is the Mealie favicon from [the Mealie repository](https://github.com/mealie-recipes/mealie/blob/mealie-next/frontend/public/icons/favicon-32x32.png). The upstream repository is licensed under [AGPL-3.0](https://github.com/mealie-recipes/mealie/blob/mealie-next/LICENSE).
+The bundled `icons/mealie-maskable-512x512.png` is the Mealie maskable icon from [the Mealie repository](https://github.com/mealie-recipes/mealie/blob/mealie-next/frontend/public/icons/android-chrome-maskable-512x512.png). The upstream repository is licensed under [AGPL-3.0](https://github.com/mealie-recipes/mealie/blob/mealie-next/LICENSE).
