@@ -52,8 +52,16 @@
 
       <section id="current-item" aria-live="polite" hidden>
         <p id="item-counter" class="eyebrow"></p>
-        <h2 id="item-name"></h2>
-        <p id="item-details"></p>
+        <div id="item-information" class="item-information">
+          <div class="item-primary">
+            <h2 id="item-name"></h2>
+            <p id="item-details"></p>
+          </div>
+          <div id="item-metadata" class="item-metadata" hidden>
+            <span id="item-label" class="item-label" hidden></span>
+            <p id="item-description" class="item-description" hidden></p>
+          </div>
+        </div>
         <div id="substitutions"></div>
         <div class="actions">
           <button id="got-it" type="button">Got it</button>

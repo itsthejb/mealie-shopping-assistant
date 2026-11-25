@@ -51,8 +51,12 @@ const elements = {
   startShopping: document.querySelector("#start-shopping"),
   currentItem: document.querySelector("#current-item"),
   itemCounter: document.querySelector("#item-counter"),
+  itemInformation: document.querySelector("#item-information"),
   itemName: document.querySelector("#item-name"),
   itemDetails: document.querySelector("#item-details"),
+  itemMetadata: document.querySelector("#item-metadata"),
+  itemLabel: document.querySelector("#item-label"),
+  itemDescription: document.querySelector("#item-description"),
   substitutions: document.querySelector("#substitutions"),
   gotIt: document.querySelector("#got-it"),
   skipIt: document.querySelector("#skip-it"),
@@ -132,6 +136,17 @@ function renderCurrentItem() {
   const presentation = getItemPresentation(item);
   elements.itemName.textContent = presentation.name;
   elements.itemDetails.textContent = presentation.details;
+  elements.itemLabel.textContent = presentation.label;
+  elements.itemLabel.hidden = !presentation.label;
+  elements.itemLabel.style.removeProperty("background-color");
+  if (presentation.labelColor && CSS.supports("color", presentation.labelColor)) {
+    elements.itemLabel.style.backgroundColor = presentation.labelColor;
+  }
+  elements.itemDescription.textContent = presentation.description;
+  elements.itemDescription.hidden = !presentation.description;
+  const hasMetadata = Boolean(presentation.label || presentation.description);
+  elements.itemMetadata.hidden = !hasMetadata;
+  elements.itemInformation.classList.toggle("has-metadata", hasMetadata);
   elements.substitutions.replaceChildren();
 
   const substitutions = getSubstitutions(item);

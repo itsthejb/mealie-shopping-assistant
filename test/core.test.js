@@ -96,7 +96,8 @@ test("searches by ingredient name while retaining fractional quantity and unit",
   const presentation = getItemPresentation(item);
 
   assert.equal(presentation.name, "Cream Cheese");
-  assert.equal(presentation.details, "2⁄3 block softened");
+  assert.equal(presentation.details, "2⁄3 block");
+  assert.equal(presentation.description, "softened");
   assert.equal(
     createSearchUrl("https://www.ocado.com/search?q=%s", presentation.name),
     "https://www.ocado.com/search?q=Cream%20Cheese",
@@ -111,7 +112,13 @@ test("extracts quantity and common units from display-only Mealie items", () => 
       food: null,
       unit: null,
     }),
-    { name: "Cream Cheese", details: "2/3 block" },
+    {
+      name: "Cream Cheese",
+      details: "2/3 block",
+      label: "",
+      labelColor: "",
+      description: "",
+    },
   );
   assert.deepEqual(
     getItemPresentation({
@@ -120,6 +127,31 @@ test("extracts quantity and common units from display-only Mealie items", () => 
       food: null,
       unit: null,
     }),
-    { name: "eggs", details: "2" },
+    {
+      name: "eggs",
+      details: "2",
+      label: "",
+      labelColor: "",
+      description: "",
+    },
+  );
+});
+
+test("presents Mealie item labels, colors, and optional descriptions", () => {
+  assert.deepEqual(
+    getItemPresentation({
+      display: "Tomatoes",
+      food: null,
+      unit: null,
+      label: { name: "Produce", color: "#3a8f52" },
+      note: "Ripe, please",
+    }),
+    {
+      name: "Tomatoes",
+      details: "",
+      label: "Produce",
+      labelColor: "#3a8f52",
+      description: "Ripe, please",
+    },
   );
 });
