@@ -107,11 +107,14 @@ export function getItemPresentation(item) {
   if (!details) {
     details = [formatQuantity(item), unitName].filter(Boolean).join(" ");
   }
-  if (item.note?.trim()) {
-    details = [details, item.note.trim()].filter(Boolean).join(" ");
-  }
 
-  return { name: name || "Shopping list item", details };
+  return {
+    name: name || "Shopping list item",
+    details,
+    label: item.label?.name?.trim() || "",
+    labelColor: item.label?.color?.trim() || "",
+    description: item.note?.trim() || "",
+  };
 }
 
 export function getItemName(item) {
