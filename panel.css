@@ -64,9 +64,27 @@ body {
   background: color-mix(in srgb, Canvas 70%, transparent);
 }
 
+.celebration-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.celebration-layer.celebrating .ticker-tape {
+  position: absolute;
+  bottom: -24px;
+  width: var(--tape-width);
+  height: var(--tape-height);
+  border-radius: 1px;
+  background: var(--tape-color);
+  animation: ticker-tape-rise 1.25s cubic-bezier(0.2, 0.7, 0.3, 1) var(--tape-delay) both;
+}
+
 main {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -288,7 +306,7 @@ select:disabled {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .background-image-layer.celebrating .ticker-tape {
+  .celebration-layer.celebrating .ticker-tape {
     display: none;
     animation: none;
   }
